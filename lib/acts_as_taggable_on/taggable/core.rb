@@ -46,10 +46,6 @@ module ActsAsTaggableOn::Taggable
             end
 
             def #{tag_type}_list=(new_tags)
-              #if self.class.preserve_tag_order? || ActsAsTaggableOn.default_parser.new(new_tags).parse.sort != #{tag_type}_list.sort
-              #  super ActsAsTaggableOn.default_parser.new(new_tags).parse
-              #end
-
               parsed_new_list = ActsAsTaggableOn.default_parser.new(new_tags).parse
 
               if self.class.preserve_tag_order? || parsed_new_list.sort != #{tag_type}_list.sort
@@ -200,7 +196,6 @@ module ActsAsTaggableOn::Taggable
       add_custom_context(context)
 
       variable_name = "@#{context.to_s.singularize}_list"
-      process_dirty_object(context, new_list) unless custom_contexts.include?(context.to_s)
 
       parsed_new_list = ActsAsTaggableOn.default_parser.new(new_list).parse
 
@@ -209,26 +204,6 @@ module ActsAsTaggableOn::Taggable
 
     def tagging_contexts
       self.class.tag_types.map(&:to_s) + custom_contexts
-    end
-
-    def process_dirty_object(context, new_list)
-      value = new_list.is_a?(Array) ? ActsAsTaggableOn::TagList.new(new_list) : new_list
-      attrib = "#{context.to_s.singularize}_list"
-
-      attributes_changed_by_setter = saved_changes.transform_values(&:first)
-
-      if attributes_changed_by_setter.include?(attrib)
-        # The attribute already has an unsaved change.
-        old = attributes_changed_by_setter[attrib]
-        attributes_changed_by_setter.delete(attrib) if old.to_s == value.to_s
-      else
-        old = tag_list_on(context)
-        if self.class.preserve_tag_order
-          previous_changes[attrib] = old if old.to_s != value.to_s
-        else
-          previous_changes[attrib] = old.to_s if old.sort != ActsAsTaggableOn.default_parser.new(value).parse.sort
-        end
-      end
     end
 
     def reload(*args)

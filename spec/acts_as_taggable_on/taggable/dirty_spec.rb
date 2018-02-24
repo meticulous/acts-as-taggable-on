@@ -104,10 +104,6 @@ describe ActsAsTaggableOn::Taggable::Dirty do
       it 'shows what the change was' do
         expect(@taggable.language_list_change).to eq([['awesome', 'epic'], ['one']])
       end
-
-      it 'shows what the changes were' do
-        expect(@taggable.language_list_changes).to eq(['awesome, epic', ['one']])
-      end
     end
 
     context 'when language_list is the same' do
