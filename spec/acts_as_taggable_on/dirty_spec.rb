@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe ActsAsTaggableOn::Taggable::Dirty do
+describe 'Dirty behavior of taggable objects' do
   context 'with un-contexted tags' do
     before(:each) do
       @taggable = TaggableModel.create(tag_list: 'awesome, epic')
