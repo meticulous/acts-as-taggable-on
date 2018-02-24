@@ -14,19 +14,19 @@ describe ActsAsTaggableOn::Taggable::Dirty do
       end
 
       it 'should show changes of dirty object' do
-        expect(@taggable.changes).to eq({'tag_list' => ['awesome, epic', ['one']]})
+        expect(@taggable.changes).to eq({'tag_list' => [['awesome', 'epic'], ['one']]})
       end
 
       it 'flags tag_list as changed' do
-        expect(@taggable.tag_list_changed?).to be_truthy
+        expect(@taggable.will_save_change_to_tag_list?).to be_truthy
       end
 
       it 'preserves original value' do
-        expect(@taggable.tag_list_was).to eq('awesome, epic')
+        expect(@taggable.tag_list_was).to eq(['awesome', 'epic'])
       end
 
       it 'shows what the change was' do
-        expect(@taggable.tag_list_change).to eq(['awesome, epic', ['one']])
+        expect(@taggable.tag_list_change).to eq([['awesome', 'epic'], ['one']])
       end
 
       context 'without order' do
@@ -90,7 +90,7 @@ describe ActsAsTaggableOn::Taggable::Dirty do
       end
 
       it 'should show changes of dirty object' do
-        expect(@taggable.changes).to eq({'language_list' => ['awesome, epic', ['one']]})
+        expect(@taggable.changes).to eq({'language_list' => [['awesome', 'epic'], ['one']]})
       end
 
       it 'flags language_list as changed' do
@@ -98,11 +98,11 @@ describe ActsAsTaggableOn::Taggable::Dirty do
       end
 
       it 'preserves original value' do
-        expect(@taggable.language_list_was).to eq('awesome, epic')
+        expect(@taggable.language_list_was).to eq(['awesome', 'epic'])
       end
 
       it 'shows what the change was' do
-        expect(@taggable.language_list_change).to eq(['awesome, epic', ['one']])
+        expect(@taggable.language_list_change).to eq([['awesome', 'epic'], ['one']])
       end
 
       it 'shows what the changes were' do
@@ -123,5 +123,19 @@ describe ActsAsTaggableOn::Taggable::Dirty do
         expect(@taggable.changes).to be_empty
       end
     end
+
+    context 'when language_list changed by association' do
+      let(:tag) { ActsAsTaggableOn::Tag.new(name: 'one') }
+
+      before(:each) do
+        expect(@taggable.changes).to be_empty
+        @taggable.languages << tag
+      end
+
+      it 'flags language_list as changed' do
+        expect(@taggable.language_list_changed?).to be_truthy
+      end
+    end
+
   end
 end
