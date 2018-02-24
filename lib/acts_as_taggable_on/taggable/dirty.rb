@@ -1,4 +1,3 @@
-require 'pry'
 module ActsAsTaggableOn::Taggable
   module Dirty
     def self.included(base)
@@ -14,26 +13,26 @@ module ActsAsTaggableOn::Taggable
 
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
 
-            #def #{tag_type}_list_changed?
-            #  changes.include?("#{tag_type}_list")
-            #end
+            def #{tag_type}_list_changed?
+              changes.include?("#{tag_type}_list")
+            end
 
-            #def #{tag_type}_list_was
-            #  #{tag_type}_list_changed? ? changed_attributes["#{tag_type}_list"] : __send__("#{tag_type}_list")
-            #end
+            def #{tag_type}_list_was
+              #{tag_type}_list_changed? ? changed_attributes["#{tag_type}_list"] : __send__("#{tag_type}_list")
+            end
 
-            #def #{tag_type}_list_change
-            #  [#{tag_type}_list, __send__('#{tag_type}_list_was')] if #{tag_type}_list_changed?
-            #end
+            def #{tag_type}_list_change
+              [#{tag_type}_list, __send__('#{tag_type}_list_was')] if #{tag_type}_list_changed?
+            end
 
-            #def #{tag_type}_list_changes
-            #  [changed_attributes['#{tag_type}_list'], __send__('#{tag_type}_list')] if #{tag_type}_list_changed?
-            #end
+            def #{tag_type}_list_changes
+              [changed_attributes['#{tag_type}_list'], __send__('#{tag_type}_list')] if #{tag_type}_list_changed?
+            end
 
-            #private
-            #def attribute_change(attr)
-            #  [changed_attributes[attr], __send__(attr)] if saved_change_to_attribute?(attr)
-            #end
+            private
+            def attribute_change(attr)
+              [changed_attributes[attr], __send__(attr)] if saved_change_to_attribute?(attr)
+            end
           RUBY
 
         end
