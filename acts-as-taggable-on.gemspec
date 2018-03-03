@@ -28,6 +28,8 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'mysql2', '~> 0.3'
   gem.add_development_dependency 'pg'
 
+  gem.add_dependency 'rake'
+
   gem.add_development_dependency 'rspec-rails'
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'rspec'
