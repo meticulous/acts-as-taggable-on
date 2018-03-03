@@ -29,8 +29,8 @@ module ActsAsTaggableOn::Taggable
                      as: :taggable,
                      class_name: 'ActsAsTaggableOn::Tagging',
                      dependent: :destroy,
-                     after_add: :dirty_tag_list,
-                     after_remove: :dirty_tag_list
+                     after_add: :dirtify_tag_list,
+                     after_remove: :dirtify_tag_list
 
             has_many context_tags, -> { order(taggings_order) },
                      class_name: 'ActsAsTaggableOn::Tag',
@@ -60,7 +60,7 @@ module ActsAsTaggableOn::Taggable
             end
 
             private
-            def dirty_tag_list tagging
+            def dirtify_tag_list tagging
               attribute_will_change! tagging.context.singularize+"_list"
             end
           RUBY

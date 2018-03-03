@@ -123,12 +123,9 @@ describe 'Dirty behavior of taggable objects' do
     context 'when language_list changed by association' do
       let(:tag) { ActsAsTaggableOn::Tag.new(name: 'one') }
 
-      before(:each) do
+      it 'flags language_list as changed' do
         expect(@taggable.changes).to be_empty
         @taggable.languages << tag
-      end
-
-      it 'flags language_list as changed' do
         expect(@taggable.language_list_changed?).to be_truthy
       end
     end
