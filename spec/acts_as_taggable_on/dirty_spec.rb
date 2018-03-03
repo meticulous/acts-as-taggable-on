@@ -17,8 +17,10 @@ describe 'Dirty behavior of taggable objects' do
         expect(@taggable.changes).to eq({'tag_list' => [['awesome', 'epic'], ['one']]})
       end
 
-      it 'flags tag_list as changed' do
-        expect(@taggable.will_save_change_to_tag_list?).to be_truthy
+      if Rails.version >= "5.1"
+        it 'flags tag_list as changed' do
+          expect(@taggable.will_save_change_to_tag_list?).to be_truthy
+        end
       end
 
       it 'preserves original value' do
