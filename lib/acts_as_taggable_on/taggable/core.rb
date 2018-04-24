@@ -176,7 +176,7 @@ module ActsAsTaggableOn::Taggable
 
       if ActsAsTaggableOn::Utils.using_postgresql?
         group_columns = grouped_column_names_for(ActsAsTaggableOn::Tag)
-        scope.order("max(#{tagging_table_name}.created_at)").group(group_columns)
+        scope.order(Arel.sql("max(#{tagging_table_name}.created_at)")).group(group_columns)
       else
         scope.group("#{ActsAsTaggableOn::Tag.table_name}.#{ActsAsTaggableOn::Tag.primary_key}")
       end.to_a
